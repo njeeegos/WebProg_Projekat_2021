@@ -1,0 +1,46 @@
+div
+{
+    margin: 5;
+}
+
+.mesto_div
+{
+    border: 1px solid black;
+    display: flex;
+    flex-grow: 1;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    background-color: chartreuse;
+}
+
+.container
+{
+    display: flex;
+    
+}
+
+.x_div
+{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}
+
+.parking_div
+{
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    background-color: gold;
+}
+
+.ime_lab
+{
+    font-size: 35px;
+}
+
+button
+{
+    margin: 5;
+}
