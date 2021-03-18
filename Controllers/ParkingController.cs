@@ -60,11 +60,20 @@ namespace WebProg_Projekat_2021.Controllers
                 Context.Mesta.Add(mesto);
                 await Context.SaveChangesAsync();
 
-                parking.Mesta.Add(mesto);
+                parking.Mesta.ToList().Add(mesto);
             }
-            
+
             Context.Update<Parking>(parking);
             await Context.SaveChangesAsync();
+        }
+
+        [HttpGet]
+        [Route("PribaviMesta/{idParkinga}")]
+        public async Task<int> PribaviMesta(int idParkinga)
+        {
+            var parking=await Context.Parkinzi.FindAsync(idParkinga);
+
+            return parking.Mesta.Count();
         }
 
         [HttpDelete]

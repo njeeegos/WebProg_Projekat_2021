@@ -22,5 +22,10 @@ namespace WebProg_Projekat_2021.Models
 
         [Column("ListaMesta")]
         public virtual List<Mesto> Mesta { get; set; }
+
+        public Parking()
+        {
+            Mesta=new List<Mesto>();
+        }
     }
 }
