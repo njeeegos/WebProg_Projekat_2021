@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebProg_Projekat_2021.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebProg_Projekat_2021.Controllers
 {
@@ -18,31 +19,6 @@ namespace WebProg_Projekat_2021.Controllers
         {
             Context=context;
         }
-        /*
-        [HttpPost]
-        [Route("KreirajParking")]
-        public async Task KreirajParking([FromBody] Parking p)
-        {
-            var proba=Context.Parkinzi.Add(p);
-            await Context.SaveChangesAsync();
-
-            //await KreirajMesta(parking.Ime);
-
-            var parking=Context.Parkinzi.Where(prom => prom.Ime==p.Ime).FirstOrDefault();
-
-            for(var i=0;i<(parking.X*parking.Y);i++)
-            {
-                var mesto=new Mesto();
-                mesto.Broj=i+1;
-                mesto.Vozilo=null;
-                mesto.Parking=parking;
-                Context.Mesta.Add(mesto);
-            }
-            await Context.SaveChangesAsync();
-
-
-        }
-        */
 
         [HttpPost]
         [Route("KreirajParking")]
@@ -67,14 +43,16 @@ namespace WebProg_Projekat_2021.Controllers
             await Context.SaveChangesAsync();
         }
 
+        /*
         [HttpGet]
         [Route("PribaviMesta/{idParkinga}")]
         public async Task<int> PribaviMesta(int idParkinga)
         {
-            var parking=await Context.Parkinzi.FindAsync(idParkinga);
-
+            var parkinzi=await Context.Parkinzi.Include(p=>p.Mesta).ToListAsync();
+            var parking=parkinzi.Find(p => p.ParkingId==idParkinga);
             return parking.Mesta.Count();
         }
+        */
 
         [HttpDelete]
         [Route("ObrisiParking/{idParkinga}")]
@@ -93,13 +71,30 @@ namespace WebProg_Projekat_2021.Controllers
             Context.Vozila.Add(vozilo);
             await Context.SaveChangesAsync();
 
-            var parking=await Context.Parkinzi.FindAsync(idParkinga);
-            var mesto=parking.Mesta.Where(p => p.Broj==brojMesta).FirstOrDefault();
+            // var parkinzi=await Context.Parkinzi.Include(p=>p.Mesta).ToListAsync();
+            // var parking=parkinzi.Find(p => p.ParkingId==idParkinga);
+            // var mesto=parking.Mesta.Where(p => p.Broj==brojMesta).FirstOrDefault();
+            // mesto.Vozilo=vozilo;
+
+            var mesto=Context.Mesta.Where(m => m.Parking.ParkingId==idParkinga && m.Broj==brojMesta).FirstOrDefault();
             mesto.Vozilo=vozilo;
 
             Context.Update<Mesto>(mesto);
             await Context.SaveChangesAsync();
         }
 
+        [HttpDelete]
+        [Route("IsparkirajVozilo/{idParkinga}/{brojMesta}")]
+        public async Task IsparkirajVozilo(int idParkinga, int brojMesta)
+        {
+            var mesto=Context.Mesta.Where(m => m.Parking.ParkingId==idParkinga && m.Broj==brojMesta)
+                                    .Include(m => m.Vozilo).FirstOrDefault();
+            var vozilo=mesto.Vozilo;
+
+            Context.Remove(vozilo);
+            await Context.SaveChangesAsync();
+        }
+
+        
     }
 }
