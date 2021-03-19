@@ -72,6 +72,13 @@ namespace WebProg_Projekat_2021.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("PribaviParkinge")]
+        public async Task<List<Parking>> PribaviParkinge()
+        {
+            return await Context.Parkinzi.Include("Mesta.Vozilo").ToListAsync();
+        }
+
         [HttpPut]
         [Route("ParkirajVozilo/{idParkinga}/{brojMesta}")]
         public async Task<IActionResult> ParkirajVozilo(int idParkinga, int brojMesta, [FromBody] Vozilo vozilo)

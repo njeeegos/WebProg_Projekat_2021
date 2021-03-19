@@ -2,6 +2,7 @@ export class Vozilo
 {
     constructor(marka, model, godiste, tip, boja)
     {
+        this.id;
         this.marka=marka;
         this.model=model;
         this.godiste=godiste;

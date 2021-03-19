@@ -1,9 +1,10 @@
 export class Mesto
 {
-    constructor(broj)
+    constructor(id, broj, vozilo)
     {
+        this.id=id
         this.broj=broj;
-        this.vozilo=null;
+        this.vozilo=vozilo;
     }
 
     crtaj(host)

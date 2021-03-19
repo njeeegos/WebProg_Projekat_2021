@@ -3,17 +3,13 @@ import {Mesto} from "./mesto.js"
 
 export class Parking
 {
-    constructor(x, y, ime)
+    constructor(id, x, y, ime)
     {
+        this.id=id;
         this.x=x;
         this.y=y;
         this.ime=ime;
-        this.lista_mesta=new Array(this.y*this.x);
-        for(let i=0;i<this.x*this.y;i++)
-        {
-            this.lista_mesta[i]=new Mesto(i+1);
-        }
-        this.container=null;
+        this.lista_mesta=new Array(x*y);
     }
 
     crtaj(host)
