@@ -56,43 +56,61 @@ namespace WebProg_Projekat_2021.Controllers
 
         [HttpDelete]
         [Route("ObrisiParking/{idParkinga}")]
-        public async Task ObrisiParking(int idParkinga)
+        public async Task<IActionResult> ObrisiParking(int idParkinga)
         {
             var parking= await Context.Parkinzi.FindAsync(idParkinga);
-            Context.RemoveRange(Context.Mesta.Where(m => m.Parking.ParkingId==idParkinga));
-            Context.Remove(parking);
-            await Context.SaveChangesAsync();
+            if(parking!=null)
+            {
+                Context.RemoveRange(Context.Mesta.Where(m => m.Parking.ParkingId==idParkinga));
+                Context.Remove(parking);
+                await Context.SaveChangesAsync();
+                return Ok();
+            }
+            else
+            {
+                return StatusCode(406);
+            }
         }
 
         [HttpPut]
         [Route("ParkirajVozilo/{idParkinga}/{brojMesta}")]
-        public async Task ParkirajVozilo(int idParkinga, int brojMesta, [FromBody] Vozilo vozilo)
+        public async Task<IActionResult> ParkirajVozilo(int idParkinga, int brojMesta, [FromBody] Vozilo vozilo)
         {
-            Context.Vozila.Add(vozilo);
-            await Context.SaveChangesAsync();
-
-            // var parkinzi=await Context.Parkinzi.Include(p=>p.Mesta).ToListAsync();
-            // var parking=parkinzi.Find(p => p.ParkingId==idParkinga);
-            // var mesto=parking.Mesta.Where(p => p.Broj==brojMesta).FirstOrDefault();
-            // mesto.Vozilo=vozilo;
-
             var mesto=Context.Mesta.Where(m => m.Parking.ParkingId==idParkinga && m.Broj==brojMesta).FirstOrDefault();
-            mesto.Vozilo=vozilo;
+            if(mesto!=null)
+            {
+                Context.Vozila.Add(vozilo);
+                await Context.SaveChangesAsync();
 
-            Context.Update<Mesto>(mesto);
-            await Context.SaveChangesAsync();
+                mesto.Vozilo=vozilo;
+                Context.Update<Mesto>(mesto);
+                await Context.SaveChangesAsync();
+                return Ok();
+            }
+            else
+            {
+                return StatusCode(406);
+            }
         }
 
         [HttpDelete]
         [Route("IsparkirajVozilo/{idParkinga}/{brojMesta}")]
-        public async Task IsparkirajVozilo(int idParkinga, int brojMesta)
+        public async Task<IActionResult> IsparkirajVozilo(int idParkinga, int brojMesta)
         {
             var mesto=Context.Mesta.Where(m => m.Parking.ParkingId==idParkinga && m.Broj==brojMesta)
                                     .Include(m => m.Vozilo).FirstOrDefault();
-            var vozilo=mesto.Vozilo;
+            if(mesto!=null)
+            {
+                var vozilo=mesto.Vozilo;
+                Context.Remove(vozilo);
+                await Context.SaveChangesAsync();
 
-            Context.Remove(vozilo);
-            await Context.SaveChangesAsync();
+                return Ok();
+            }   
+            else
+            {
+                return StatusCode(406);
+            }
         }
 
         

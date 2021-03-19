@@ -11,12 +11,15 @@ namespace WebProg_Projekat_2021.Models
         [Column("ParkingId")]
         public int ParkingId { get; set; }
 
+        [StringLength(60)]
         [Column("Ime")]
         public string Ime { get; set; }
 
+        [Range(1, 100)]
         [Column("X")]
         public int X { get; set; }
 
+        [Range(1, 100)]
         [Column("Y")]
         public int Y { get; set; }
 
