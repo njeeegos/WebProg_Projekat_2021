@@ -186,9 +186,37 @@ export class Parking
             const uneti_tip=this.container.querySelector("input[name='karoserija']:checked").value;
             const uneta_boja=this.container.querySelector(".boja_input").value;
 
-            const vozilo=new Vozilo(uneta_marka, uneti_model, uneto_godiste, uneti_tip, uneta_boja);
-            this.lista_mesta[uneto_mesto-1].izmeniMesto(vozilo);
-            this.crtajFormu(host);
+            fetch("https://localhost:5001/Parking/ParkirajVozilo/" + this.id + "/" + uneto_mesto, {
+                method: "PUT",
+                headers: {
+                    "Accept": "application/json; charset=utf-8",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "marka": uneta_marka,
+                    "model": uneti_model,
+                    "godiste": uneto_godiste,
+                    "tip": uneti_tip,
+                    "boja": uneta_boja
+                })
+            }).then(p => {
+                if(p.ok)
+                {
+                    const vozilo=new Vozilo(uneta_marka, uneti_model, uneto_godiste, uneti_tip, uneta_boja);
+                    this.lista_mesta[uneto_mesto-1].izmeniMesto(vozilo);
+                    this.crtajFormu(host);
+                }
+                else if(p.status==406)
+                {
+                    alert("Mesto je popunjeno!");
+                }
+            }).catch(p => {
+                alert("Greska prilikom upisa!");
+            });
+
+            // const vozilo=new Vozilo(uneta_marka, uneti_model, uneto_godiste, uneti_tip, uneta_boja);
+            // this.lista_mesta[uneto_mesto-1].izmeniMesto(vozilo);
+            // this.crtajFormu(host);
         }
     }
 
