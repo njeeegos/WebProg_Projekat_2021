@@ -213,10 +213,6 @@ export class Parking
             }).catch(p => {
                 alert("Greska prilikom upisa!");
             });
-
-            // const vozilo=new Vozilo(uneta_marka, uneti_model, uneto_godiste, uneti_tip, uneta_boja);
-            // this.lista_mesta[uneto_mesto-1].izmeniMesto(vozilo);
-            // this.crtajFormu(host);
         }
     }
 
@@ -233,7 +229,16 @@ export class Parking
         }
         else
         {
-            this.lista_mesta[uneto_mesto-1].isprazniMesto();
+            fetch("https://localhost:5001/Parking/IsparkirajVozilo/" + this.id + "/" + uneto_mesto, {
+                method: "DELETE"
+            }).then(p => {
+                if(p.ok) {
+                    this.lista_mesta[uneto_mesto-1].isprazniMesto();
+                }
+                else{
+                    alert("Doslo je do gresek!");
+                }
+            });
         }
     }
 }

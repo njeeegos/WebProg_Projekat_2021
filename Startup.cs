@@ -40,7 +40,8 @@ namespace WebProg_Projekat_2021
                 p.AddPolicy("CORS", builder => 
                 {
                     builder.AllowAnyMethod()
-                           .AllowAnyOrigin(); 
+                           .AllowAnyOrigin()
+                           .AllowAnyHeader();
                 });
             });
             services.AddDbContext<Context>(options => 
