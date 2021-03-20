@@ -170,7 +170,11 @@ export class Parking
     parkirajVozilo(host)
     {
         const uneto_mesto=parseInt(this.container.querySelector(".broj_mesta_input").value);
-        if(uneto_mesto>(this.x*this.y) || uneto_mesto<1)
+        if(isNaN(uneto_mesto))
+        {
+            alert("Neophodno je uneti broj mesta!");
+        }
+        else if(uneto_mesto>(this.x*this.y) || uneto_mesto<1)
         {
             alert("Uneto mesto je van opsega!")
         }
@@ -180,13 +184,47 @@ export class Parking
         }
         else
         {
-            const uneta_marka=this.container.querySelector(".marka_input").value;
-            const uneti_model=this.container.querySelector(".model_input").value;
-            const uneto_godiste=parseInt(this.container.querySelector(".godiste_input").value);
-            const uneti_tip=this.container.querySelector("input[name='karoserija']:checked").value;
-            const uneta_boja=this.container.querySelector(".boja_input").value;
+            var poruka=" ";
 
-            fetch("https://localhost:5001/Parking/ParkirajVozilo/" + this.id + "/" + uneto_mesto, {
+            const uneta_marka=this.container.querySelector(".marka_input").value;
+            if(uneta_marka=="")
+            {
+                poruka+="Neophodno je uneti marku vozila!\n";
+            }
+            
+            const uneti_model=this.container.querySelector(".model_input").value;
+            if(uneti_model=="")
+            {
+                poruka+="Neophodno je uneti model vozila!\n";
+            }
+
+            const uneto_godiste=parseInt(this.container.querySelector(".godiste_input").value);
+            if(isNaN(uneto_godiste))
+            {
+                poruka+="Neophodno je uneti godiste vozila!\n";
+            }
+            if(this.container.querySelector("input[name='karoserija']:checked")!=null)
+            {
+                const uneti_tip=this.container.querySelector("input[name='karoserija']:checked").value;
+            }
+            else
+            {
+                poruka+="Neophodno je uneti tip vozila!\n";
+            }
+            
+            const uneta_boja=this.container.querySelector(".boja_input").value;
+            if(uneta_boja=="")
+            {
+                poruka+="Neophodno je uneti boju vozila!\n";
+            }
+
+            if(poruka!=" ")
+            {
+                alert(poruka);
+            }
+            else
+            {
+                fetch("https://localhost:5001/Parking/ParkirajVozilo/" + this.id + "/" + uneto_mesto, {
                 method: "PUT",
                 headers: {
                     "Accept": "application/json; charset=utf-8",
@@ -213,6 +251,7 @@ export class Parking
             }).catch(p => {
                 alert("Greska prilikom upisa!");
             });
+            }  
         }
     }
 
@@ -234,9 +273,10 @@ export class Parking
             }).then(p => {
                 if(p.ok) {
                     this.lista_mesta[uneto_mesto-1].isprazniMesto();
+                    document.location.reload()
                 }
                 else{
-                    alert("Doslo je do gresek!");
+                    alert("Doslo je do greske!");
                 }
             });
         }
