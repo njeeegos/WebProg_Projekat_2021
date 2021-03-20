@@ -55,17 +55,17 @@ namespace WebProg_Projekat_2021.Controllers
         */
 
         [HttpDelete]
-        [Route("ObrisiParking/{idParkinga}")]
-        public async Task<IActionResult> ObrisiParking(int idParkinga)
+        [Route("ObrisiParking/{imeParkinga}")]
+        public async Task<IActionResult> ObrisiParking(string imeParkinga)
         {
-            var parking= await Context.Parkinzi.FindAsync(idParkinga);
+            var parking= Context.Parkinzi.Where(p => p.Ime==imeParkinga).FirstOrDefault();
             if(parking!=null)
             {
-                Context.RemoveRange(Context.Mesta.Where(m => m.Parking.ParkingId==idParkinga));
+                Context.RemoveRange(Context.Mesta.Where(m => m.Parking.ParkingId==parking.ParkingId));
                 Context.Remove(parking);
                 await Context.SaveChangesAsync();
                 return Ok();
-            }
+            }   
             else
             {
                 return StatusCode(406);

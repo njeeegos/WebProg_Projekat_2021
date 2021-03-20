@@ -11,6 +11,10 @@ export class Mesto
     {
         const mesto_div=document.createElement("div");
         mesto_div.className="mesto_div";
+        if(this.vozilo!=null)
+        {
+            mesto_div.className+=" zauzeto_mesto";
+        }
         mesto_div.innerHTML=this.broj;
         host.appendChild(mesto_div);
 
