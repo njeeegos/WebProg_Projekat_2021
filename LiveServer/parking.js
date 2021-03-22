@@ -203,11 +203,10 @@ export class Parking
             {
                 poruka+="Neophodno je uneti godiste vozila!\n";
             }
-            if(this.container.querySelector("input[name='karoserija']:checked")!=null)
-            {
-                const uneti_tip=this.container.querySelector("input[name='karoserija']:checked").value;
-            }
-            else
+
+            //var uneti_tip=this.container.querySelector("input[name='karoserija']:checked");
+            var uneti_tip=this.container.querySelector("input[type='radio']:checked");
+            if(uneti_tip==null)
             {
                 poruka+="Neophodno je uneti tip vozila!\n";
             }
@@ -224,6 +223,8 @@ export class Parking
             }
             else
             {
+                console.log(typeof uneti_tip.value);
+                console.log(uneti_model);
                 fetch("https://localhost:5001/Parking/ParkirajVozilo/" + this.id + "/" + uneto_mesto, {
                 method: "PUT",
                 headers: {
@@ -234,13 +235,13 @@ export class Parking
                     "marka": uneta_marka,
                     "model": uneti_model,
                     "godiste": uneto_godiste,
-                    "tip": uneti_tip,
+                    "tip": uneti_tip.value,
                     "boja": uneta_boja
                 })
             }).then(p => {
                 if(p.ok)
                 {
-                    const vozilo=new Vozilo(uneta_marka, uneti_model, uneto_godiste, uneti_tip, uneta_boja);
+                    const vozilo=new Vozilo(uneta_marka, uneti_model, uneto_godiste, uneti_tip.value, uneta_boja);
                     this.lista_mesta[uneto_mesto-1].izmeniMesto(vozilo);
                     this.crtajFormu(host);
                 }

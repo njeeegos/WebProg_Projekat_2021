@@ -68,18 +68,6 @@ function DodavanjeParkinga()
             })
         }).then(document.location.reload());
     }
-
-    // const brisi_dugme=document.createElement("button");
-    // brisi_dugme.innerHTML="Obrisi parking";
-    // container.appendChild(brisi_dugme);    
-
-    // brisi_dugme.onclick=(ev)=> {
-    //     const uneto_ime=container.querySelector(".ime_input").value;
-
-    //     fetch("https://localhost:5001/Parking/ObrisiParking/" + uneto_ime, {
-    //         method: "DELETE"
-    //     }).then(setTimeout(document.location.reload(), 2000));
-    // }
 }
 
 DodavanjeParkinga();
