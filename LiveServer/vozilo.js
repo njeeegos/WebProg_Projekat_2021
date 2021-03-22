@@ -1,8 +1,8 @@
 export class Vozilo
 {
-    constructor(marka, model, godiste, tip, boja)
+    constructor(id, marka, model, godiste, tip, boja)
     {
-        this.id;
+        this.id=id;
         this.marka=marka;
         this.model=model;
         this.godiste=godiste;

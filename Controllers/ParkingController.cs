@@ -120,6 +120,27 @@ namespace WebProg_Projekat_2021.Controllers
             }
         }
 
-        
+        [HttpPut]
+        [Route("PromeniVozilo/{idVozila}")]
+        public async Task<IActionResult> PromeniVozilo(int idVozila, [FromBody] Vozilo novo_vozilo)
+        {
+            var vozilo=await Context.Vozila.FindAsync(idVozila);
+            
+            if(vozilo!=null)
+            {
+                vozilo.Marka=novo_vozilo.Marka;
+                vozilo.Model=novo_vozilo.Model;
+                vozilo.Godiste=novo_vozilo.Godiste;
+                vozilo.Tip=novo_vozilo.Tip;
+                vozilo.Boja=novo_vozilo.Boja;
+                Context.Update<Vozilo>(vozilo);
+                await Context.SaveChangesAsync();
+                return Ok();
+            }
+            else
+            {
+                return StatusCode(406);
+            }
+        }
     }
 }

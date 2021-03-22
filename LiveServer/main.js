@@ -82,7 +82,7 @@ fetch("https://localhost:5001/Parking/PribaviParkinge", {
         parking.mesta.forEach(m => {
             if(m.vozilo!=null)
             {
-                vozilo=new Vozilo(m.vozilo.marka, m.vozilo.model, m.vozilo.godiste, m.vozilo.tip, m.vozilo.boja);
+                vozilo=new Vozilo(m.vozilo.voziloId, m.vozilo.marka, m.vozilo.model, m.vozilo.godiste, m.vozilo.tip, m.vozilo.boja);
             }
 
             parking_mesta[i]=new Mesto(m.mestoId, m.broj, vozilo)

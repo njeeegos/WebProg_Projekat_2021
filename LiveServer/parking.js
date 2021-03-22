@@ -135,6 +135,11 @@ export class Parking
         const isparkiraj_dugme=document.createElement("button");
         isparkiraj_dugme.innerHTML="Isparkiraj";
         forma_div.appendChild(isparkiraj_dugme);
+
+        //dugme promeni
+        const promeni_dugme=document.createElement("button");
+        promeni_dugme.innerHTML="Promeni vozilo";
+        forma_div.appendChild(promeni_dugme);
         
         submit_dugme.onclick=(ev)=> {
             this.parkirajVozilo(host);
@@ -142,6 +147,10 @@ export class Parking
 
         isparkiraj_dugme.onclick=(ev)=> {
             this.isparkirajVozilo(host);
+        }
+
+        promeni_dugme.onclick=(ev)=> {
+            this.promeniVozilo(host);
         }
         
         this.crtajParking(host);
@@ -223,8 +232,6 @@ export class Parking
             }
             else
             {
-                console.log(typeof uneti_tip.value);
-                console.log(uneti_model);
                 fetch("https://localhost:5001/Parking/ParkirajVozilo/" + this.id + "/" + uneto_mesto, {
                 method: "PUT",
                 headers: {
@@ -259,7 +266,11 @@ export class Parking
     isparkirajVozilo(host)
     {
         const uneto_mesto=parseInt(this.container.querySelector(".broj_mesta_input").value);
-        if(uneto_mesto>(this.x*this.y) || uneto_mesto<1)
+        if(isNaN(uneto_mesto))
+        {
+            alert("Neophodno je uneti broj mesta!");
+        }
+        else if(uneto_mesto>(this.x*this.y) || uneto_mesto<1)
         {
             alert("Uneto mesto je van opsega!")
         }
@@ -278,6 +289,88 @@ export class Parking
                 }
                 else{
                     alert("Doslo je do greske!");
+                }
+            });
+        }
+    }
+
+    promeniVozilo(host)
+    {
+        const uneto_mesto=parseInt(this.container.querySelector(".broj_mesta_input").value);
+        if(isNaN(uneto_mesto))
+        {
+            alert("Neophodno je uneti broj mesta!");
+        }
+        else if(uneto_mesto>(this.x*this.y) || uneto_mesto<1)
+        {
+            alert("Uneto mesto je van opsega!")
+        }
+        else if(this.lista_mesta[uneto_mesto-1].vozilo==null)
+        {
+            alert("Mesto je prazno!");
+        }
+        else
+        {
+            var uneta_marka=this.container.querySelector(".marka_input").value;
+            if(uneta_marka=="")
+            {
+                uneta_marka=this.lista_mesta[uneto_mesto-1].vozilo.marka;
+            }
+            
+            var uneti_model=this.container.querySelector(".model_input").value;
+            if(uneti_model=="")
+            {
+                uneti_model=this.lista_mesta[uneto_mesto-1].vozilo.model;
+            }
+            var uneto_godiste=parseInt(this.container.querySelector(".godiste_input").value);
+            if(isNaN(uneto_godiste))
+            {
+                uneto_godiste=this.lista_mesta[uneto_mesto-1].vozilo.godiste;
+            }
+
+            //var uneti_tip=this.container.querySelector("input[name='karoserija']:checked");
+            var uneti_tip=this.container.querySelector("input[type='radio']:checked");
+            if(uneti_tip==null)
+            {
+                uneti_tip=this.lista_mesta[uneto_mesto-1].vozilo.tip;
+            }
+            else
+            {
+                uneti_tip=uneti_tip.value;
+            }
+            
+            var uneta_boja=this.container.querySelector(".boja_input").value;
+            if(uneta_boja=="")
+            {
+                uneta_boja=this.lista_mesta[uneto_mesto-1].vozilo.boja;
+            }
+
+            fetch("https://localhost:5001/Parking/PromeniVozilo/" + this.lista_mesta[uneto_mesto-1].vozilo.id, {
+                method: "PUT",
+                headers: {
+                    "Accept": "application/json; charset=utf-8",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "marka": uneta_marka,
+                    "model": uneti_model,
+                    "godiste": uneto_godiste,
+                    "tip": uneti_tip,
+                    "boja": uneta_boja
+                })
+            }).then(p => {
+                if(p.ok)
+                {
+                    this.lista_mesta[uneto_mesto-1].vozilo.marka=uneta_marka;
+                    this.lista_mesta[uneto_mesto-1].vozilo.model=uneti_model;
+                    this.lista_mesta[uneto_mesto-1].vozilo.godiste=uneto_godiste;
+                    this.lista_mesta[uneto_mesto-1].vozilo.tip=uneti_tip;
+                    this.lista_mesta[uneto_mesto-1].vozilo.boja=uneta_boja;
+                    this.crtajFormu(host);
+                }
+                else if(p.status==406)
+                {
+                    alert("Greska prilikom upisa!");
                 }
             });
         }
