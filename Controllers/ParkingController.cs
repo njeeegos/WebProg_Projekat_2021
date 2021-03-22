@@ -43,17 +43,6 @@ namespace WebProg_Projekat_2021.Controllers
             await Context.SaveChangesAsync();
         }
 
-        /*
-        [HttpGet]
-        [Route("PribaviMesta/{idParkinga}")]
-        public async Task<int> PribaviMesta(int idParkinga)
-        {
-            var parkinzi=await Context.Parkinzi.Include(p=>p.Mesta).ToListAsync();
-            var parking=parkinzi.Find(p => p.ParkingId==idParkinga);
-            return parking.Mesta.Count();
-        }
-        */
-
         [HttpDelete]
         [Route("ObrisiParking/{imeParkinga}")]
         public async Task<IActionResult> ObrisiParking(string imeParkinga)

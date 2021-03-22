@@ -26,7 +26,7 @@ function DodavanjeParkinga()
     container.appendChild(x_div);
 
     const x_lab=document.createElement("label");
-    x_lab.innerHTML="Unesite X: ";
+    x_lab.innerHTML="Unesite širinu parkinga: ";
     x_div.appendChild(x_lab);
 
     const x_input=document.createElement("input");
@@ -39,7 +39,7 @@ function DodavanjeParkinga()
     container.appendChild(y_div);
 
     const y_lab=document.createElement("label");
-    y_lab.innerHTML="Unesite Y: ";
+    y_lab.innerHTML="Unesite dužinu parkinga: ";
     y_div.appendChild(y_lab);
 
     const y_input=document.createElement("input");
