@@ -25,6 +25,7 @@ export class Mesto
             }
             else
             {
+                console.log(this.vozilo.marka);
                 alert("Marka: "+this.vozilo.marka+"\nModel: "+this.vozilo.model+"\nGodiste: "+
                 this.vozilo.godiste+"\nTip karoserije: "+this.vozilo.tip+"\nBoja: "+this.vozilo.boja);
             }

@@ -248,7 +248,7 @@ export class Parking
             }).then(p => {
                 if(p.ok)
                 {
-                    const vozilo=new Vozilo(uneta_marka, uneti_model, uneto_godiste, uneti_tip.value, uneta_boja);
+                    const vozilo=new Vozilo(0,uneta_marka, uneti_model, uneto_godiste, uneti_tip.value, uneta_boja);
                     this.lista_mesta[uneto_mesto-1].izmeniMesto(vozilo);
                     this.crtajFormu(host);
                 }
